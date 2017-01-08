@@ -5,7 +5,13 @@ function setChart(){
 	w = 400;
 	var ds;
 
+	// VERSJA 4444444444444444444444
+
 	d3.csv("MonthlySales.csv", function(error, data){
+
+	  // data.forEach(function(d){ d['months'] = +d['months']; });   
+	  // data.forEach(function(d){ d['sales'] = +d['sales']; });   
+
 		if(error) {
 			console.log(error);
 		} else {
@@ -13,28 +19,26 @@ function setChart(){
 			ds = data;
 		}
 
+		var lineFun = d3.line()
+			.x(function(d) {
+				return ((d.month - 20130001) / 3.25);
+			})
+			.y(function(d) {
+				return (h - d.sales);
+			})
+			.curve(d3.curveBasis);
 
-		var lineFun = d3.svg.line()
-			.x(function(d) {return ((d.month - 20130001) / 3.25)})
-			.y(function(d) {return (h - d.sales);})
-			.interpolate("linear");
-
-		var svg = d3.select("#chartOne").append("svg").attr({
-			"width": w,
-			"height": h
-		})
+		var svg = d3.select("body").append("xhtml:div").append("svg")
+		.attr("width", w)
+		.attr("height", h);
 
 		var viz = svg.append("path")
-			.attr({
-				d: lineFun(ds),
-				"stroke": "purple",
-				"stroke-width": 2,
-				"fill": "none"
-			});
-	})
+			.attr("d", lineFun(ds))
+			.attr("class", "chart-line");
 
-	// VERSJA 4444444444444444444444
+	});
 
+};
 	// d3.csv("MonthlySales.csv", function(error, data){
 	// 	if(error) {
 	// 		console.log(error);
@@ -43,18 +47,26 @@ function setChart(){
 	// 		ds = data;
 	// 	}
 
-	// 	var lineFun = d3.line()
+
+	// 	var lineFun = d3.svg.line()
 	// 		.x(function(d) {return ((d.month - 20130001) / 3.25)})
 	// 		.y(function(d) {return (h - d.sales);})
-	// 		.curve(d3.curveBasis);
+	// 		.interpolate("linear");
 
-	// 	var svg = d3.select("body").append("xhtml:div").append("svg")
-	// 	.attr("width", w)
-	// 	.attr("height", h);
+	// 	var svg = d3.select("#chartOne").append("svg").attr({
+	// 		"width": w,
+	// 		"height": h
+	// 	})
 
 	// 	var viz = svg.append("path")
-	// 		.attr("d", lineFun(ds))
-	// 		.attr("class", "line");
+	// 		.attr({
+	// 			d: lineFun(ds),
+	// 			"stroke": "purple",
+	// 			"stroke-width": 2,
+	// 			"fill": "none"
+	// 		});
+	// })
+
 
 		  // var svg = d3.select("body")
     // .append("xhtml:div")
@@ -129,5 +141,3 @@ function setChart(){
 	// 		"fill": "#666666",
 	// 		"text-anchor": "start",
 	// 	});
-
-}
