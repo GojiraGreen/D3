@@ -4,8 +4,54 @@ function setChart(){
 	h = 100;
 	w = 400;
 	var ds;
+	var salesTotal = 0.0;
+	var salesAvg = 0.0;
+	var metrics = [];
+
 
 	// VERSJA 4444444444444444444444
+	function buildLine(xDif, myClass) {
+		var lineFun = d3.line()
+			.x(function(d) {
+				return ((d.month - 20130001) / xDif);
+			})
+			.y(function(d) {
+				return (h - d.sales);
+			})
+			.curve(d3.curveBasis);
+
+		var svg = d3.select("body").append("xhtml:div").append("svg")
+		.attr("width", w)
+		.attr("height", h);
+
+		var viz = svg.append("path")
+			.attr("d", lineFun(ds))
+			.attr("class", myClass);
+	};
+
+	function showTotals() {
+		var t = d3.select("body").append("table")
+
+		for(var i = 0; i < ds.length; i++ ) {
+			salesTotal += Number(ds[i]['sales']);
+		}
+
+		salesAvg = salesTotal/ds.length;
+
+		metrics.push("Sales Total: " + salesTotal);
+		metrics.push("sales Avg: " + salesAvg.toFixed(2));
+
+		var tr = t.selectAll("tr")
+			.data(metrics)
+			.enter()
+			.append("tr")
+			.append("td")
+			.text(function(d){
+				return d;
+			});
+
+
+	}
 
 	d3.csv("MonthlySales.csv", function(error, data){
 
@@ -19,23 +65,9 @@ function setChart(){
 			ds = data;
 		}
 
-		var lineFun = d3.line()
-			.x(function(d) {
-				return ((d.month - 20130001) / 3.25);
-			})
-			.y(function(d) {
-				return (h - d.sales);
-			})
-			.curve(d3.curveBasis);
-
-		var svg = d3.select("body").append("xhtml:div").append("svg")
-		.attr("width", w)
-		.attr("height", h);
-
-		var viz = svg.append("path")
-			.attr("d", lineFun(ds))
-			.attr("class", "chart-line");
-
+		buildLine(3.24, "chart-line");
+		buildLine(6.25, "chart-line2");
+		showTotals();
 	});
 
 };
