@@ -1,8 +1,8 @@
 <!DOCTYPE>
 <html>
 	<head>
-		<script src="d3/d3.min.js" charset="utf-8"></script>
-		<script src="demo5.js" charset="utf-8"></script>
+		<script src="d3/d3.js" charset="utf-8"></script>
+		<script src="demo7.js" charset="utf-8"></script>
 		<style>
 			.chart-line {
 				stroke: purple;
@@ -13,6 +13,21 @@
 				stroke: green;
 				stroke-width: 2;
 				fill: none;
+			}
+			.axis path,
+			.axis line {
+				fill: none;
+				stroke: black;
+				shape-rendering: crispEdges;
+			}
+			.axis text {
+				font-family: sans-serif;
+				font-size: 10px;
+			}
+			h1 {
+				font-family: sans-serif;
+				font-weight: 300;
+				font-size: 16px;
 			}
 		</style>
 	</head>
